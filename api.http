@@ -1,3 +1,5 @@
+@userid = 5575af85-1b97-422a-90fe-d464004c8615
+
 POST http://localhost:3000/
 content-type: application/json
 
@@ -7,3 +9,29 @@ content-type: application/json
 }
 
 ###
+
+POST http://localhost:3000/user
+content-type: application/json
+
+{
+  "name": "Gustavo Piovesan",
+  "email": "gpossanii@outlook.com"
+}
+
+###
+
+GET http://localhost:3000/user/{{userid}}
+
+###
+
+PATCH http://localhost:3000/user/{{userid}}
+Content-Type: application/json
+
+{
+  "name": "Gustavo Possani",
+  "email": "gpossanii@outlook.com"
+}
+
+###
+
+DELETE http://localhost:3000/user/5575af85-1b97-422a-90fe-d464004c8615
