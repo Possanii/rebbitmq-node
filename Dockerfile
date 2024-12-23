@@ -7,4 +7,6 @@ USER root
 
 WORKDIR /home/root/app
 
+RUN npm install -g pnpm
+
 CMD [ "tail", "-f", "/dev/null" ]
