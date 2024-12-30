@@ -3,9 +3,9 @@ include:
   - ../postgres/docker-compose.yaml
 
 services:
-  delivery-api:
+  stock-api:
     build: .
-    container_name: delivery-api
+    container_name: stock-api
     ports:
       - 3001:3001
     volumes:
