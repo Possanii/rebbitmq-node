@@ -1,0 +1,15 @@
+include:
+  - ../rabbitmq/docker-compose.yaml
+  - ../postgres/docker-compose.yaml
+
+services:
+  delivery-api:
+    build: .
+    container_name: delivery-api
+    ports:
+      - 3001:3001
+    volumes:
+      - .:/home/root/app
+    depends_on:
+      - rabbitmq
+      - postgres
