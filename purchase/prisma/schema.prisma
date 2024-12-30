@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @unique @default(uuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  purchase Purchase[]
+}
+
+model Product {
+  id        String   @id @unique @default(uuid())
+  name      String
+  price     Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  purchases ProductPurchase[]
+}
+
+model ProductPurchase {
+  id        String   @id @unique @default(uuid())
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Purchase   Purchase? @relation(fields: [purchaseId], references: [id])
+  purchaseId String?
+
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  @@map("product_purchase")
+}
+
+model Purchase {
+  id        String   @id @unique @default(uuid())
+  name      String
+  price     Int      @map("price_in_cents")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  buyer   User   @relation(fields: [buyerId], references: [id])
+  buyerId String
+
+  products ProductPurchase[]
+}

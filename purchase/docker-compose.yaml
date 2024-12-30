@@ -1,0 +1,15 @@
+include:
+  - ../rabbitmq/docker-compose.yaml
+  - ../postgres/docker-compose.yaml
+
+services:
+  purchase-api:
+    build: .
+    container_name: purchase-api
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/root/app
+    depends_on:
+      - rabbitmq
+      - postgres
