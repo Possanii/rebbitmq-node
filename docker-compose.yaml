@@ -1,2 +1,3 @@
 include:
-  './purchase/docker-compose.yaml'
+  - ./purchase/docker-compose.yaml
+  - ./delivery/docker-compose.yaml

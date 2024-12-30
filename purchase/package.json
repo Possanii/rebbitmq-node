@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc:watch": "tsc --watch",
-    "start:dev": "pnpm load:env nodemon --exec ts-node -r tsconfig-paths/register dist/index.js",
+    "start:dev": "pnpm load:env nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "load:env": "dotenv -e .env --"
   },
   "keywords": [],
