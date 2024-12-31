@@ -15,8 +15,8 @@ datasource db {
 
 model User {
   id        String   @id @unique @default(uuid())
-  email     String   @unique
   name      String
+  email     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -26,11 +26,13 @@ model User {
 model Product {
   id        String   @id @unique @default(uuid())
   name      String
-  price     Float
+  slug      String   @unique
+  price     Int      @map("price_in_cents")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  purchases ProductPurchase[]
+  purchases    ProductPurchase[]
+  stockProduct StockProduct[]
 }
 
 model ProductPurchase {
@@ -39,10 +41,10 @@ model ProductPurchase {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  Purchase   Purchase? @relation(fields: [purchaseId], references: [id])
+  purchase   Purchase? @relation(fields: [purchaseId], references: [id])
   purchaseId String?
 
-  Product   Product? @relation(fields: [productId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
   productId String?
 
   @@map("product_purchase")
@@ -50,8 +52,7 @@ model ProductPurchase {
 
 model Purchase {
   id        String   @id @unique @default(uuid())
-  name      String
-  price     Int      @map("price_in_cents")
+  total     Int      @map("total_in_cents")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -59,4 +60,29 @@ model Purchase {
   buyerId String
 
   products ProductPurchase[]
+}
+
+model Stock {
+  id        String   @id @unique @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  stockProduct StockProduct[]
+}
+
+model StockProduct {
+  id        String   @id @unique @default(uuid())
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  stock   Stock? @relation(fields: [stockId], references: [id])
+  stockId String
+
+  @@map("stock_product")
 }

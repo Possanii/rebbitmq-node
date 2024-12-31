@@ -2,12 +2,12 @@ import { Container } from 'inversify';
 import { ILogGateway } from '../adapters/gateways/ILogGateaway';
 import { TYPES } from './types';
 import { ConsoleLogGateway } from '../infra/gateways/ConsoleLogGateway';
-import { IOrderRepository } from '../adapters/repositories/IOrderRepository';
-import { PlaceOrder } from './useCases/PlaceOrder';
+import { IPurchaseRepository } from '../adapters/repositories/IPurchaseRepository';
+import { PlacePurchase } from './useCases/PlacePurchase';
 import { IUserRepository } from '../adapters/repositories/IUserRepository';
 import { Prisma } from '../infra/orm/prisma';
 import { UserUseCase } from './useCases/User';
-import { PostgresOrderRepository } from '../infra/repository/PostgresOrderRepository';
+import { PostgresPurchaseRepository } from '../infra/repository/PostgresPurchaseRepository';
 import { PostgresUserRepository } from '../infra/repository/PostgresUserRepository';
 import { ICurrentORM } from '@/adapters/orm/ICurrentORM';
 import { RabbitmqGateway } from '@/infra/gateways/RabbitmqGateway';
@@ -27,14 +27,14 @@ container.bind<IMessagingGateway>(TYPES.Messaging).to(RabbitmqGateway);
 
 // Repositories
 container
-  .bind<IOrderRepository>(TYPES.OrderRepository)
-  .to(PostgresOrderRepository);
+  .bind<IPurchaseRepository>(TYPES.PurchaseRepository)
+  .to(PostgresPurchaseRepository);
 container
   .bind<IUserRepository>(TYPES.UserRepository)
   .to(PostgresUserRepository);
 
 // UseCases
-container.bind<PlaceOrder>(TYPES.PlaceOrder).to(PlaceOrder);
+container.bind<PlacePurchase>(TYPES.PlacePurchase).to(PlacePurchase);
 container.bind<UserUseCase>(TYPES.UserUseCase).to(UserUseCase);
 
 export { container };

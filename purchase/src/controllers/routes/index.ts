@@ -1,9 +1,9 @@
-import { placeOrderDTOSchema } from '../../domain/dto/placeOrderDTO';
+import { placePurchaseDTOSchema } from '../../domain/dto/placePurchaseDTO';
 import { userSchema } from '../../application/models/User';
 import { TYPES } from '../../application/types';
 import { container } from '../../application/inversify.config';
 import { UserUseCase } from '../../application/useCases/User';
-import { PlaceOrder } from '../../application/useCases/PlaceOrder';
+import { PlacePurchase } from '../../application/useCases/PlacePurchase';
 import { env } from '../../application/config/env';
 import app from '../lib/fastify';
 
@@ -12,11 +12,11 @@ app.get('/', async (request, reply) => {
 });
 
 app.post('/', async (request, reply) => {
-  const placeOrder = container.get<PlaceOrder>(TYPES.PlaceOrder);
+  const placePurchase = container.get<PlacePurchase>(TYPES.PlacePurchase);
 
-  const formatted = placeOrderDTOSchema.parse(request.body);
+  const formatted = placePurchaseDTOSchema.parse(request.body);
 
-  await placeOrder.createOrder(formatted);
+  await placePurchase.createPurchase(formatted);
 
   return reply.status(201).send();
 });

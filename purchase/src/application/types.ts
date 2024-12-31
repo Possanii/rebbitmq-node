@@ -4,12 +4,12 @@ const TYPES = {
   Messaging: Symbol.for('Messaging'),
 
   // useCases
-  PlaceOrder: Symbol.for('PlaceOrder'),
+  PlacePurchase: Symbol.for('PlacePurchase'),
   UserUseCase: Symbol.for('UserUseCase'),
 
   // Repositories
   UserRepository: Symbol.for('UserRepository'),
-  OrderRepository: Symbol.for('OrderRepository'),
+  PurchaseRepository: Symbol.for('PurchaseRepository'),
 };
 
 export { TYPES };

@@ -4,8 +4,18 @@ POST http://localhost:3000/
 content-type: application/json
 
 {
-  "email": "gpossanii@outlook.com",
-  "amount": 100
+  "purchase": {
+    "total": 10000,
+    "products": [
+      {
+        "quantity": 1,
+        "product": {
+          "id": "2f983752-5bee-412c-b449-475740222811"
+        }
+      }
+    ]
+  },
+  "buyerId": "d1e0b315-62d1-49b6-9d51-ff31ddc4fa47"
 }
 
 ###

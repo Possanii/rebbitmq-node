@@ -51,10 +51,23 @@ export class RabbitmqGateway implements IMessagingGateway {
     queue: string,
     callback: (message: Message) => void
   ): Promise<Replies.Consume> {
-    this.log.log({ message: 'Consuming queue' + JSON.stringify(queue) });
-    return this.channel!.consume(queue, (message) => {
-      callback(message!);
-      this.channel!.ack(message!);
-    });
+    if (!this.channel) {
+      throw new Error('Channel is not initialized. Did you call initialize()?');
+    }
+
+    this.log.log({ message: 'Consuming queue ' + queue });
+
+    const channel = this.channel;
+    return channel.consume(
+      queue,
+      (message) => {
+        if (message) {
+          callback(message);
+
+          channel.ack(message);
+        }
+      },
+      { noAck: false }
+    );
   }
 }
