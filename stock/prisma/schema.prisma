@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @unique @default(uuid())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  purchase Purchase[]
+}
+
+model Product {
+  id        String   @id @unique @default(uuid())
+  name      String
+  slug      String   @unique
+  price     Int      @map("price_in_cents")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  purchases    ProductPurchase[]
+  stockProduct StockProduct[]
+}
+
+model ProductPurchase {
+  id        String   @id @unique @default(uuid())
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  purchase   Purchase? @relation(fields: [purchaseId], references: [id])
+  purchaseId String?
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  @@map("product_purchase")
+}
+
+model Purchase {
+  id        String   @id @unique @default(uuid())
+  total     Int      @map("total_in_cents")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  buyer   User   @relation(fields: [buyerId], references: [id])
+  buyerId String
+
+  products ProductPurchase[]
+}
+
+model Stock {
+  id        String   @id @unique @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  stockProduct StockProduct[]
+}
+
+model StockProduct {
+  id        String   @id @unique @default(uuid())
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  stock   Stock? @relation(fields: [stockId], references: [id])
+  stockId String
+
+  @@map("stock_product")
+}
